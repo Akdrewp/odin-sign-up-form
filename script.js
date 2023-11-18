@@ -25,13 +25,17 @@ window.onload = () => {
                 node.nextElementSibling.textContent = "";
             }
         });
-    }
+    };
 
     form.addEventListener("submit", (event) => {
 
-        if (!form.validity.valid) {
+        let invalidElements = document.querySelectorAll("input:invalid");
+
+        if (invalidElements.length) {
             event.preventDefault();
-            showErrorMessage(event);
+            for (let i = 0; i < invalidElements.length; i++) {
+                showErrorMessage(invalidElements[i], invalidElements[i].nextElementSibling);
+            }
         }
     });
 
@@ -51,7 +55,7 @@ window.onload = () => {
             errorMessage = `Must be a ${input.id}`; 
         }
         else if (input.validity.valueMissing) {
-            errorMessage = "Type in " + input.id;
+            errorMessage = "Field cannot be blank";
         }
         else if (input.validity.customError){
             errorMessage = input.validationMessage;
